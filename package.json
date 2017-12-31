@@ -12,6 +12,7 @@
     "async": "^2.6.0",
     "async-waterfall": "^0.1.5",
     "coinbase": "^2.0.6",
+    "express": "^4.16.2",
     "node-mysql": "^0.4.2"
   }
 }

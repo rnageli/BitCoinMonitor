@@ -24,18 +24,26 @@ var insertPrices = (buyPrice, sellPrice, spotPrice) => {
   });
 };
 
-var getPrices = (rows,callback) => {
-    var sql = "select * from bitcoin_prices LIMIT ?";
-    con.query(sql, [rows], function (error, results, fields) {
-      if(error){
-          console.error('Error retrieving top '+rows+'from the db: '+error);
-          callback(err,null);
-      }else{
-          //console.log('results'+JSON.stringify(results));
-          //console.log('fields'+JSON.stringify(fields));
-          callback(null,results);
-      }
-    });
+var getPrices = (fromTime, toTime, callback) => {
+     console.log('inside getprices');
+    var sql = "select * from bitcoin_prices WHERE Timestamp BETWEEN ? AND ?";
+    var inserts = [fromTime, toTime];
+    sql = con.format(sql, inserts);
+    console.log( "sql command: " +sql);
+     try{
+         con.query(sql, function (error, results, fields) {
+           if(error){
+               console.log('Error retrieving top from the db: '+error);
+               callback(err,null);
+           }else{
+               //console.log('results'+JSON.stringify(results));
+               //console.log('fields'+JSON.stringify(fields));
+               callback(null,results);
+           }
+         });
+    }catch(e){
+         console.log('Error in sql query exec '+e.message);
+    }
 }
 
 module.exports = {
