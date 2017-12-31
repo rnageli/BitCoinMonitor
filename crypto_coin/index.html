@@ -1,0 +1,44 @@
+<html>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js"></script>
+  </head>
+  <body>
+    <div style="display: block; width: 1250; height: 500;">
+      <canvas id="myChart"></canvas>
+    </div>
+  </body>
+  <script>
+  var ctx = document.getElementById("myChart").getContext('2d');
+  //var  =[];
+  function initChart(priceData,labels){
+      var myChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+              labels: labels,
+              datasets: [{
+                  label: '# of Votes',
+                  data: priceData,
+                  borderWidth: 1
+              }]
+          }
+      });
+    }
+  $.get("http://localhost:8080", function(data, status){
+        //console.log(status,data);
+        if(status=="success"){
+          //console.log('HEllo');
+          data = JSON.parse(data);
+          var priceData = [];
+          var labels = [];
+          for(var i=0;i<data.length;i++){
+            priceData.push(data[i].BuyPrice);
+            labels.push(data[i].Timestamp);
+          }
+          //console.log(priceData);
+          initChart(priceData,labels);
+        }
+        //alert("Data: " + JSON.stringify(data) + "\nStatus: " + status);
+    });
+  </script>
+</html>
